@@ -1,0 +1,37 @@
+type Block @entity {
+  id: ID! # The block hash
+  height: BigInt!
+}
+
+type TransferEvent @entity {
+  id: ID!
+  blockHeight: BigInt!
+  txHash: String!
+  sender: String
+  recipient: String!
+  amount: String!
+}
+
+type Transfer @entity {
+  id: ID! # id field is always required and must look like this
+  txHash: String!
+  blockHeight: BigInt # The block height of the transfer
+  sender: String! # The account that transfers are made from
+  recipient: String! # The account that transfers are made to
+  amount: String! # Amount that is transferred
+}
+
+type Transaction @entity {
+  id: ID!
+  blockHeight: BigInt!
+  timestamp: String!
+}
+
+type Message @entity {
+  id: ID!
+  blockHeight: BigInt!
+  txHash: String!
+  contract: String!
+  sender: String!
+  executeMsg: String!
+}

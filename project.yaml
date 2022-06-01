@@ -1,0 +1,43 @@
+specVersion: 1.0.0
+name: terra-subql-starter
+version: 0.0.1
+runner:
+  node:
+    name: '@subql/node-terra'
+    version: '*'
+  query:
+    name: '@subql/query'
+    version: '*'
+description: starting point project
+repository: 'https://github.com/subquery/terra-subql-starter'
+schema:
+  file: ./schema.graphql
+network:
+  chainId: columbus-5
+  endpoint: 'https://terra-columbus-5.beta.api.onfinality.io'
+  dictionary: 'https://api.subquery.network/sq/subquery/terra-columbus-5-dictionary'
+  mantlemint: 'https://mantlemint.terra-columbus-5.beta.api.onfinality.io:1320'
+dataSources:
+  - kind: terra/Runtime
+    startBlock: 4724001
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleBlock
+          kind: terra/BlockHandler
+        - handler: handleTransaction
+          kind: terra/TransactionHandler
+        - handler: handleEvent
+          kind: terra/EventHandler
+          filter:
+            type: transfer
+            messageFilter:
+              type: /terra.wasm.v1beta1.MsgExecuteContract
+              values:
+                contract: terra1j66jatn3k50hjtg2xemnjm8s7y8dws9xqa5y8w
+        - handler: handleMessage
+          kind: terra/MessageHandler
+          filter:
+            type: /terra.wasm.v1beta1.MsgExecuteContract
+            values:
+              contract: terra1j66jatn3k50hjtg2xemnjm8s7y8dws9xqa5y8w
